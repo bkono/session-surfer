@@ -1,7 +1,7 @@
-meanApp.service 'Sessions', ($rootScope, $q, $http) ->
+meanApp.service 'SurfSessions', ($rootScope, $q, $http) ->
   activeSession = {}
 
-  Sessions = {
+  SurfSessions = {
     currentSession: ->
       q = $q.defer()
       console.log "current session called, active session is: "
@@ -21,9 +21,12 @@ meanApp.service 'Sessions', ($rootScope, $q, $http) ->
       activeSession = { startTime: startTime }
       console.log "set activeSession to #{activeSession}"
       q.resolve(activeSession)
+      $http.post '/sessions', activeSession
+        .then (err, session) ->
+          console.log "foo, #{session}"
 
       return q.promise
   }
 
-  return Sessions
+  return SurfSessions
 
