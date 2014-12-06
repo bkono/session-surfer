@@ -22,8 +22,10 @@ meanApp.service 'SurfSessions', ($rootScope, $q, $http) ->
       console.log "set activeSession to #{activeSession}"
       q.resolve(activeSession)
       $http.post '/sessions', activeSession
-        .then (err, session) ->
-          console.log "foo, #{session}"
+        .success (session) ->
+          console.log session
+        .error (err) ->
+          console.log "error: [ #{error} ]"
 
       return q.promise
   }
