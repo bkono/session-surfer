@@ -14,7 +14,6 @@ meanApp.controller 'NewSurfSessionCtrl', ($scope, SurfSessions) ->
     $scope.elapsed = elapsed = (new Date().getTime() - session.startTime.getTime())
     $scope.$broadcast('timer-set-start', session.startTime.getTime())
     $scope.$broadcast("timer-start")
-    SurfSessions.currentSession()
 
 meanApp.controller 'SurfSessionsCtrl', ($scope, SurfSessions, Global) ->
   $scope.global = Global
