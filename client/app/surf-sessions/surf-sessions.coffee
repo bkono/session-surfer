@@ -1,11 +1,13 @@
-meanApp.config ($routeProvider) ->
-  $routeProvider
-    .when '/surf-sessions',
+meanApp.config ($stateProvider) ->
+  $stateProvider
+    .state 'surfSessions',
+      url:         '/surf-sessions'
       templateUrl: 'surf-sessions/surf-sessions.tpl.html'
-      controller: 'SurfSessionsCtrl'
-    .when '/surf-sessions/new',
+      controller:  'SurfSessionsCtrl'
+    .state 'surfSessions.new',
+      url:         '/new'
       templateUrl: 'surf-sessions/surf-sessions.new.tpl.html'
-      controller: 'NewSurfSessionCtrl'
+      controller:  'NewSurfSessionCtrl'
 
 meanApp.controller 'NewSurfSessionCtrl', ($scope, SurfSessions) ->
   $scope.model = {}
