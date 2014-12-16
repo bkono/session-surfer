@@ -52,8 +52,7 @@ require('./server/config/passport')(passport)
 # express configuration
 app = require("./server/config/express")(passport, db, logger, root_path)
 require('./server/config/globals')(app)
-global.eventServer = new (require('events')).EventEmitter
-
+#
 # bootstrap routes
 require('./server/routes')(app)
 
@@ -64,7 +63,7 @@ require('./server/routes')(app)
 #   require(path.join __dirname, file)(app)
 
 # start the app
-require('./server/bouys/bouy-sync.service')()
+require('./server/bouys/bouy-sync.service').run()
 app.listen app.get('port'), ->
   logger.info "app server listening on port #{@address().port} in #{config.ENV} mode"
 

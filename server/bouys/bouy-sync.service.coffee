@@ -4,10 +4,10 @@ lo = require 'lodash'
 Transform = require('stream').Transform
 request = require 'request'
 
-module.exports = ->
+exports.run = ->
   request('http://www.ndbc.noaa.gov/data/stations/station_table.txt').pipe(parser)
 
-parser = new Transform({objectMode: true})
+exports.parser = parser = new Transform({objectMode: true})
 nextRows = ''
 headers = null
 server = global.eventServer

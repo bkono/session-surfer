@@ -6,7 +6,7 @@ gutil             = require 'gulp-util'
 rename            = require 'gulp-rename'
 clean             = require 'gulp-clean'
 gulpif            = require 'gulp-if'
-
+mocha             = require 'gulp-mocha'
 # Minification
 uglify            = require 'gulp-uglify'
 minifyHTML        = require 'gulp-minify-html'
@@ -31,7 +31,10 @@ path =
     templates: "client/app/**/*.{html,jade}" # All html, jade, and markdown files used as templates within the app
     images: "client/app/images/*.{png,jpg,jpeg,gif,ico}" # All image files
     static: "client/app/static/*.*" # Any other static content such as the favicon
-
+  server: 
+    scripts: ["server/**/*.{coffee,js}", "server/**/*.{coffee,js}"] # All .js and .coffee files, starting with app.coffee or app.js
+    specs: ["server/specs/*.coffee"]
+    
 tasks = {}
 
 gulp.task 'scripts', tasks.scripts = () ->
@@ -111,6 +114,12 @@ gulp.task 'assets', tasks.assets = ->
     .pipe(livereload())
 gulp.task 'assets:clean', ['clean'], tasks.assets
 
+gulp.task 'server-specs', () ->
+  gulp.src(path.server.specs, {read: false})
+    .pipe(mocha(
+      reporter: 'spec',
+      compilers: 'coffee:coffee-script'))
+
 gulp.task 'watch', () ->
   livereload.listen()
   gulp.watch path.app.scripts, ['scripts']
@@ -118,6 +127,7 @@ gulp.task 'watch', () ->
   gulp.watch path.app.bower, ['bowerjs', 'bowercss']
   gulp.watch path.app.templates, ['templates']
   gulp.watch path.app.images, ['images']
+  gulp.watch path.server.scripts, ['server-specs']
 
 gulp.task 'clean', (cb) ->
   del(['www/**'], cb)
