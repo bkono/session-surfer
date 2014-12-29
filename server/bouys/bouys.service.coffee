@@ -3,18 +3,19 @@ http = require 'http'
 changeCase = require 'change-case'
 lo = require 'lodash'
 mongoose = require 'mongoose'
-Bouy = require './bouy.model'
+BouyModel = require './bouy.model'
+Bouy = mongoose.model 'Bouy'
 BouySync = require './bouy-sync.service'
 events = global.eventServer
 
 events.on 'bouy:available', (bouy) ->
   BouyService.firstOrCreateBouy  bouy, (error, station) ->
-    console.log error if error
-    console.log station if station
+    logger.error error if error
 
 module.exports = BouyService =
 
   getBouys: (cb) ->
+    logger.info "calling mongo"
     Bouy.find {}, (err, bouy) -> cb err, bouy
 
   getBouy: (id, cb) ->
@@ -29,5 +30,4 @@ module.exports = BouyService =
 
   deleteBouy: (id, cb) ->
     Bouy.findOneAndRemove {'_id': id}, (err, bouy) -> cb err, bouy
-
 

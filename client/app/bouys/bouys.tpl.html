@@ -1,0 +1,8 @@
+<section>
+    <div ng-controller='BouysCtrl' class="starter-template">
+      <h1>Bouys</h1>
+      <ui-gmap-google-map center='map.center' zoom='map.zoom'>
+        <ui-gmap-markers models='bouys' coords="'location'" idKey="'stationId'"/>
+      </ui-gmap-google-map>
+    </div>
+</section>

@@ -12,4 +12,5 @@ describe 'Parsing the bouy station table text', ->
       count += 1
       ['00922','00923'].should.include(bouy.stationId)
       done() if count is 2
-    fs.createReadStream('./server/specs/support/station_sample.txt', {encoding: 'utf8'}).pipe(parser)
+    fs.createReadStream('./server/specs/support/station_sample.txt',
+      {encoding: 'utf8'}).pipe(parser)

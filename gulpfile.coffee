@@ -31,10 +31,10 @@ path =
     templates: "client/app/**/*.{html,jade}" # All html, jade, and markdown files used as templates within the app
     images: "client/app/images/*.{png,jpg,jpeg,gif,ico}" # All image files
     static: "client/app/static/*.*" # Any other static content such as the favicon
-  server: 
+  server:
     scripts: ["server/**/*.{coffee,js}", "server/**/*.{coffee,js}"] # All .js and .coffee files, starting with app.coffee or app.js
     specs: ["server/specs/*.coffee"]
-    
+
 tasks = {}
 
 gulp.task 'scripts', tasks.scripts = () ->
@@ -85,10 +85,17 @@ gulp.task 'templates', tasks.templates = ->
 gulp.task 'templates:clean', ['clean'], tasks.templates
 
 gulp.task 'jquery', tasks.jquery = ->
-  gulp.src('client/components/jquery/dist/jquery.min.js')
+  gulp.src('client/components/jquery/dist/jquery.min.*')
     .pipe(size())
     .pipe(gulp.dest('www/js'))
 gulp.task 'jquery:clean', ['clean'], tasks.jquery
+
+gulp.task 'jsmap', tasks.jsmap = ->
+  gulp.src('client/components/sizzle/**/*.min.map', !'client/components/jquery/dist/jquery.min.map')
+    .pipe(flatten())
+    .pipe(size())
+    .pipe(gulp.dest('www/js/dist'))
+gulp.task 'jsmap:clean', ['clean'], tasks.jsmap
 
 gulp.task 'bowerjs', tasks.bowerjs = ->
   gulp.src('client/components/**/*.min.js', !'client/components/jquery/dist/jquery.min.js')
@@ -134,4 +141,4 @@ gulp.task 'clean', (cb) ->
 
 gulp.task 'default', ['build', 'watch']
 
-gulp.task 'build', ['scripts:clean', 'styles:clean', 'templates:clean', 'jquery:clean', 'bowerjs:clean', 'bowercss:clean', 'assets:clean']
+gulp.task 'build', ['scripts:clean', 'styles:clean', 'templates:clean', 'jquery:clean', 'bowerjs:clean', 'bowercss:clean', 'assets:clean', 'jsmap:clean']
