@@ -45,11 +45,11 @@ gulp.task 'scripts', tasks.scripts = () ->
     .pipe(ngAnnotate())
     .pipe(concat("app.js"))
     .pipe(size())
-    .pipe(gulp.dest("www/js"))
+    .pipe(gulp.dest("client/www/js"))
     .pipe(uglify())
     .pipe(rename({extname: ".min.js"}))
     .pipe(size())
-    .pipe(gulp.dest "www/js")
+    .pipe(gulp.dest "client/www/js")
     .pipe(livereload())
 gulp.task 'scripts:clean', ['clean'], tasks.scripts
 
@@ -69,32 +69,32 @@ gulp.task "styles", tasks.styles = ->
     .pipe(gulpif(/[.]sass|scss$/, sassstream))
     .pipe(concat 'app.css')
     .pipe(size())
-    .pipe(gulp.dest "www/css")
+    .pipe(gulp.dest "client/www/css")
     .pipe(minifyCSS())
     .pipe(rename({extname: ".min.css"}))
     .pipe(size())
-    .pipe(gulp.dest "www/css")
+    .pipe(gulp.dest "client/www/css")
     .pipe(livereload())
 gulp.task 'styles:clean', ['clean'], tasks.styles
 
 gulp.task 'templates', tasks.templates = ->
   gulp.src path.app.templates
     .pipe(size())
-    .pipe(gulp.dest('www'))
+    .pipe(gulp.dest('client/www/'))
     .pipe(livereload())
 gulp.task 'templates:clean', ['clean'], tasks.templates
 
 gulp.task 'jquery', tasks.jquery = ->
   gulp.src('client/components/jquery/dist/jquery.min.*')
     .pipe(size())
-    .pipe(gulp.dest('www/js'))
+    .pipe(gulp.dest('client/www/js'))
 gulp.task 'jquery:clean', ['clean'], tasks.jquery
 
 gulp.task 'jsmap', tasks.jsmap = ->
   gulp.src('client/components/sizzle/**/*.min.map', !'client/components/jquery/dist/jquery.min.map')
     .pipe(flatten())
     .pipe(size())
-    .pipe(gulp.dest('www/js/dist'))
+    .pipe(gulp.dest('client/www/js/dist'))
 gulp.task 'jsmap:clean', ['clean'], tasks.jsmap
 
 gulp.task 'bowerjs', tasks.bowerjs = ->
@@ -102,7 +102,7 @@ gulp.task 'bowerjs', tasks.bowerjs = ->
     .pipe(flatten())
     .pipe(concat 'vendor.min.js')
     .pipe(size())
-    .pipe(gulp.dest('www/js'))
+    .pipe(gulp.dest('client/www/js'))
 gulp.task 'bowerjs:clean', ['clean'], tasks.bowerjs
 
 gulp.task 'bowercss', tasks.bowercss = ->
@@ -110,14 +110,14 @@ gulp.task 'bowercss', tasks.bowercss = ->
     .pipe(flatten())
     .pipe(concat 'vendor.min.css')
     .pipe(size())
-    .pipe(gulp.dest('www/css'))
+    .pipe(gulp.dest('client/www/css'))
 gulp.task 'bowercss:clean', ['clean'], tasks.bowercss
 
 gulp.task 'assets', tasks.assets = ->
   gulp.src(path.app.images)
     .pipe(imagemin({optimizationLevel: 5}))
     .pipe(size())
-    .pipe(gulp.dest 'www/assets')
+    .pipe(gulp.dest 'client/www/assets')
     .pipe(livereload())
 gulp.task 'assets:clean', ['clean'], tasks.assets
 
@@ -137,7 +137,7 @@ gulp.task 'watch', () ->
   gulp.watch path.server.scripts, ['server-specs']
 
 gulp.task 'clean', (cb) ->
-  del(['www/**'], cb)
+  del(['client/www/**'], cb)
 
 gulp.task 'default', ['build', 'watch']
 
