@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "dependencies": {
     "angular-timer": "https://github.com/bkonowitz/angular-timer.git#master",
-    "angular-google-maps": "~2.0.12",
+    "angular-google-maps": "~2.0.12"
   },
  "devDependencies": {
     "ionic": "driftyco/ionic-bower#1.0.0-beta.14"

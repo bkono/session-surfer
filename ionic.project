@@ -1,0 +1,11 @@
+{
+  "name": "mean.ionic.coffee",
+  "app_id": "",
+  "gulpStartupTasks": [
+    "build"
+  ],
+  "watchPatterns": [
+    "www/**/*",
+    "!www/lib/**/*"
+  ]
+}
