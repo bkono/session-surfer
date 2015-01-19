@@ -7,6 +7,7 @@ rename            = require 'gulp-rename'
 clean             = require 'gulp-clean'
 gulpif            = require 'gulp-if'
 mocha             = require 'gulp-mocha'
+karma             = require('karma').server
 # Minification
 uglify            = require 'gulp-uglify'
 minifyHTML        = require 'gulp-minify-html'
@@ -29,13 +30,20 @@ path =
     styles: "client/app/**/*.{scss,sass,css}" # css and scss files
     bower: 'client/components'
     templates: "client/app/**/*.{html,jade}" # All html, jade, and markdown files used as templates within the app
-    images: "client/app/images/*.{png,jpg,jpeg,gif,ico}" # All image files
+    images: "client/app/**/*.{png,jpg,jpeg,gif,ico}" # All image files
     static: "client/app/static/*.*" # Any other static content such as the favicon
+    lib: "client/lib/**/*"
   server:
     scripts: ["server/**/*.{coffee,js}", "server/**/*.{coffee,js}"] # All .js and .coffee files, starting with app.coffee or app.js
     specs: ["server/specs/*.coffee"]
 
 tasks = {}
+
+gulp.task 'test', (done) ->
+  karma.start
+    configFile: __dirname + '/karma.conf.js'
+    #singleRun: true
+  , done
 
 gulp.task 'scripts', tasks.scripts = () ->
   coffeestream = coffee({bare: true})
@@ -50,11 +58,13 @@ gulp.task 'scripts', tasks.scripts = () ->
     .pipe(rename({extname: ".min.js"}))
     .pipe(size())
     .pipe(gulp.dest "www/js")
-    .pipe(livereload())
+    # .pipe(livereload())
 gulp.task 'scripts:clean', ['clean'], tasks.scripts
 
 gulp.task "styles", tasks.styles = ->
   sassstream = sass({
+      errLogToConsole: true,
+      sourceComments: 'normal'
       sourcemap: false,
       unixNewlines: true,
       style: 'nested',
@@ -74,14 +84,14 @@ gulp.task "styles", tasks.styles = ->
     .pipe(rename({extname: ".min.css"}))
     .pipe(size())
     .pipe(gulp.dest "www/css")
-    .pipe(livereload())
+    # .pipe(livereload())
 gulp.task 'styles:clean', ['clean'], tasks.styles
 
 gulp.task 'templates', tasks.templates = ->
   gulp.src path.app.templates
     .pipe(size())
     .pipe(gulp.dest('www'))
-    .pipe(livereload())
+    # .pipe(livereload())
 gulp.task 'templates:clean', ['clean'], tasks.templates
 
 gulp.task 'jquery', tasks.jquery = ->
@@ -98,7 +108,17 @@ gulp.task 'jsmap', tasks.jsmap = ->
 gulp.task 'jsmap:clean', ['clean'], tasks.jsmap
 
 gulp.task 'bowerjs', tasks.bowerjs = ->
-  gulp.src('client/components/**/*.min.js', !'client/components/jquery/dist/jquery.min.js')
+  gulp.src(
+    [
+      'client/components/**/*.min.js',
+      '!client/components/jquery/dist/jquery.min.js',
+      '!client/components/angular/**/*.*',
+      '!client/components/angular-animate/**/*.*',
+      '!client/components/angular-sanitize/**/*.*',
+      '!client/components/angular-ui-router/**/*.*',
+      '!client/components/ionic/**/*.*'
+    ]
+  )
     .pipe(flatten())
     .pipe(concat 'vendor.min.js')
     .pipe(size())
@@ -106,7 +126,16 @@ gulp.task 'bowerjs', tasks.bowerjs = ->
 gulp.task 'bowerjs:clean', ['clean'], tasks.bowerjs
 
 gulp.task 'bowercss', tasks.bowercss = ->
-  gulp.src('client/components/**/*.min.css')
+  gulp.src(
+    [
+      'client/components/**/*.min.css'
+      '!client/components/angular/**/*.*',
+      '!client/components/angular-animate/**/*.*',
+      '!client/components/angular-sanitize/**/*.*',
+      '!client/components/angular-ui-router/**/*.*',
+      '!client/components/ionic/**/*.*'
+    ]
+  )
     .pipe(flatten())
     .pipe(concat 'vendor.min.css')
     .pipe(size())
@@ -118,8 +147,14 @@ gulp.task 'assets', tasks.assets = ->
     .pipe(imagemin({optimizationLevel: 5}))
     .pipe(size())
     .pipe(gulp.dest 'www/assets')
-    .pipe(livereload())
+    # .pipe(livereload())
 gulp.task 'assets:clean', ['clean'], tasks.assets
+
+gulp.task 'lib', tasks.lib = ->
+  gulp.src(path.app.lib)
+    .pipe(size())
+    .pipe(gulp.dest 'www/lib')
+gulp.task 'lib:clean', ['clean'], tasks.lib
 
 gulp.task 'server-specs', () ->
   gulp.src(path.server.specs, {read: false})
@@ -128,12 +163,13 @@ gulp.task 'server-specs', () ->
       compilers: 'coffee:coffee-script'))
 
 gulp.task 'watch', () ->
-  livereload.listen()
+  # livereload.listen()
+  gulp.watch path.app.lib, ['lib']
   gulp.watch path.app.scripts, ['scripts']
   gulp.watch path.app.styles, ['styles']
   gulp.watch path.app.bower, ['bowerjs', 'bowercss']
   gulp.watch path.app.templates, ['templates']
-  gulp.watch path.app.images, ['images']
+  gulp.watch path.app.images, ['assets']
   gulp.watch path.server.scripts, ['server-specs']
 
 gulp.task 'clean', (cb) ->
@@ -141,4 +177,4 @@ gulp.task 'clean', (cb) ->
 
 gulp.task 'default', ['build', 'watch']
 
-gulp.task 'build', ['scripts:clean', 'styles:clean', 'templates:clean', 'jquery:clean', 'bowerjs:clean', 'bowercss:clean', 'assets:clean', 'jsmap:clean']
+gulp.task 'build', ['lib:clean', 'scripts:clean', 'styles:clean', 'templates:clean', 'jquery:clean', 'bowerjs:clean', 'bowercss:clean', 'assets:clean', 'jsmap:clean']

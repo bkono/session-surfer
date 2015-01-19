@@ -1,0 +1,11 @@
+<ion-view view-title="Surf Sessions">
+  <ion-content class="padding">
+    <div class="list card">
+      <div class="item item-body">
+        <ui-gmap-google-map center='map.center' zoom='map.zoom'>
+          <ui-gmap-markers models='buoys' coords="'location'" idKey="'stationId'"/>
+        </ui-gmap-google-map>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

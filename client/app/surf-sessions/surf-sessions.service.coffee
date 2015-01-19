@@ -2,6 +2,12 @@ meanApp.service 'SurfSessions', ($rootScope, $q, $http) ->
   activeSession = {}
 
   SurfSessions = {
+    hasActiveSession: ->
+      if activeSession.startTime
+        return true
+      else
+        return false
+
     currentSession: ->
       q = $q.defer()
       console.log "current session called, active session is: "
@@ -25,7 +31,7 @@ meanApp.service 'SurfSessions', ($rootScope, $q, $http) ->
         .success (session) ->
           console.log session
         .error (err) ->
-          console.log "error: [ #{error} ]"
+          console.log "error: [ #{err} ]"
 
       return q.promise
   }

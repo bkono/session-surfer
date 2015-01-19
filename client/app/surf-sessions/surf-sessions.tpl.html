@@ -1,9 +1,25 @@
-<section>
-
-    <div class="starter-template">
-      <h1>Session Page</h1>
-      
-      <div ui-view></div>
+<ion-view view-title="Surf Sessions">
+  <ion-content class="padding">
+    <div class="list card" ng-show="hasActiveSession()">
+      <div class="item item-body">
+        <span>{{model.startTime}}</span>
+        <!-- not sure why this is failing, ignoring for now <timer autostart="false">{{hours.toString().lpad("0", 2)}}:{{minutes.toString().lpad("0", 2)}}:{{seconds.toString().lpad("0", 2)}}</timer> -->
+      </div>
     </div>
-
-</section>
+    <div class="list card" ng-hide="hasActiveSession()">
+      <div class="item item-body">
+        <button class="button button-full button-positive" ng-click="newSession()">
+          Start new session
+        </button>
+      </div>
+    </div>
+    <!-- <div class="list card"> -->
+    <!--   <div class="item item&#45;divider">Recent Updates</div> -->
+    <!--   <div class="item item&#45;body"> -->
+    <!--     <div> -->
+    <!--       There is a fire in <b>sector 3</b> -->
+    <!--     </div> -->
+    <!--   </div> -->
+    <!-- </div> -->
+  </ion-content>
+</ion-view>
