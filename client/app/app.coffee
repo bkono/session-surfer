@@ -1,6 +1,6 @@
 'use strict'
 
-meanApp = angular.module 'meanApp', ['ionic']
+meanApp = angular.module 'meanApp', ['ionic', 'timer']
 
 meanApp.run ($ionicPlatform) ->
   $ionicPlatform.ready ->

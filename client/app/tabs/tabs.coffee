@@ -5,4 +5,4 @@ meanApp.config ($stateProvider, $urlRouterProvider) ->
       abstract: true,
       templateUrl: 'tabs/tabs.tpl.html'
 
-  $urlRouterProvider.otherwise('/tab/dash')
+  $urlRouterProvider.otherwise('/tab/surf-sessions')
