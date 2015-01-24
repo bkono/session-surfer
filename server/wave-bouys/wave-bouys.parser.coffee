@@ -7,9 +7,11 @@ Transform = require('stream').Transform
 logger  = require '../config/logger'
 
 exports.run = ->
-  checkHour = ->
-      hour = new Date().getUTCHours()
-      server.emit 'waveBouy:checkHour', (hour - 1)
+  currentHour = () -> new Date().getUTCHours()
+
+  checkHour = (hour = null)->
+      hour?= currentHour()
+      server.emit 'waveBouy:checkHour', hour
 
   new CronJob(
     cronTime: '* */10 * * * *'
@@ -17,7 +19,8 @@ exports.run = ->
     start: true,
     timeZone: "UTC"
     )
-  checkHour()
+  # grab the last hour
+  checkHour( currentHour() - 1 )
 
 server.on 'waveBouy:checkHour', (hour) ->
   hour = hour + 24 if hour < 0

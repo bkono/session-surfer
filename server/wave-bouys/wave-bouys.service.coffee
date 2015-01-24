@@ -14,7 +14,7 @@ currentReadings = new CurrentWaveBouyReadings()
 currentReadings.on 'waveBouy:newReading', (waveBouy) ->
   WaveBouyService.createOrUpdateBouy waveBouy, (error, waveBouy) ->
     logger.error error if error
-    logger.info "persisted new bouy #{JSON.stringify(waveBouy)}"
+    logger.debug "persisted new bouy reading #{JSON.stringify(waveBouy)}"
 
 module.exports = WaveBouyService =
 
