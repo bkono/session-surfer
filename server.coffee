@@ -64,6 +64,7 @@ require('./server/routes')(app)
 
 # start the app
 require('./server/bouys/bouy-sync.service').run()
+require('./server/wave-bouys/wave-bouys.parser').run()
 app.listen app.get('port'), ->
   logger.info "app server listening on port #{@address().port} in #{config.ENV} mode"
 

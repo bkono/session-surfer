@@ -3,7 +3,7 @@ module.exports = (app) ->
   app.use '/users', require './users'
   app.use '/sessions', require './surf-sessions'
   app.use '/bouys', require './bouys'
-
+  app.use '/wave-bouys', require './wave-bouys'
   # end module routes
 
   # All undefined asset or api routes should return a 404

@@ -15,18 +15,19 @@ events.on 'bouy:available', (bouy) ->
 module.exports = BouyService =
 
   getBouys: (cb) ->
-    logger.info "calling mongo"
     Bouy.find {}, (err, bouy) -> cb err, bouy
 
   getBouy: (id, cb) ->
-    Bouy.findOne {_id: id}, (err, bouy) -> cb err, bouy
+    Bouy.findOne {stationId: changeCase.lower(id) }, (err, bouy) ->
+      cb err, bouy
 
   createBouy: (bouy, cb) ->
-    bouy = new Bouy(bouy)
-    bouy.save (err) -> cb err, bouy
+    newBouy = new Bouy(bouy)
+    newBouy.save (err) -> cb err, newBouy
 
   firstOrCreateBouy: (bouy, cb) ->
-    Bouy.update {stationId: bouy.stationId}, bouy, {upsert: true}, (err, bouy) -> cb err, bouy
+    Bouy.update {stationId: bouy.stationId},
+      bouy, {upsert: true}, (err, bouy) -> cb err, bouy
 
   deleteBouy: (id, cb) ->
     Bouy.findOneAndRemove {'_id': id}, (err, bouy) -> cb err, bouy
