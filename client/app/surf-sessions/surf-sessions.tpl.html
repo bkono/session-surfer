@@ -3,6 +3,10 @@
     <div class="list card" ng-show="hasActiveSession()">
       <div class="item item-body">
         <timer autostart="false">{{hours.toString().lpad("0", 2)}}:{{minutes.toString().lpad("0", 2)}}:{{seconds.toString().lpad("0", 2)}}</timer>
+        <button class="button button-full button-energized" 
+          ui-sref="tab.surfSessions.ratings">
+          Rate Session
+        </button>
       </div>
     </div>
     <div class="list card" ng-hide="hasActiveSession()">
@@ -12,13 +16,5 @@
         </button>
       </div>
     </div>
-    <!-- <div class="list card"> -->
-    <!--   <div class="item item&#45;divider">Recent Updates</div> -->
-    <!--   <div class="item item&#45;body"> -->
-    <!--     <div> -->
-    <!--       There is a fire in <b>sector 3</b> -->
-    <!--     </div> -->
-    <!--   </div> -->
-    <!-- </div> -->
   </ion-content>
 </ion-view>

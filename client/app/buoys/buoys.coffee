@@ -14,7 +14,6 @@ meanApp.config ($stateProvider, uiGmapGoogleMapApiProvider) ->
 
 meanApp.controller 'BuoysCtrl', ($scope, Buoy, uiGmapGoogleMapApi) ->
   $scope.buoys = Buoy.query()
-  console.log $scope.buoys
   $scope.map =
     center:
       latitude: 34, longitude: -118

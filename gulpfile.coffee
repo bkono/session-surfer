@@ -104,7 +104,7 @@ gulp.task 'jsmap', tasks.jsmap = ->
   gulp.src('client/components/sizzle/**/*.min.map', !'client/components/jquery/dist/jquery.min.map')
     .pipe(flatten())
     .pipe(size())
-    .pipe(gulp.dest('www/js/dist'))
+    .pipe(gulp.dest('www/js'))
 gulp.task 'jsmap:clean', ['clean'], tasks.jsmap
 
 gulp.task 'bowerjs', tasks.bowerjs = ->
