@@ -2,8 +2,7 @@
   <ion-content class="padding">
     <div class="list card" ng-show="hasActiveSession()">
       <div class="item item-body">
-        <span>{{model.startTime}}</span>
-        <!-- not sure why this is failing, ignoring for now <timer autostart="false">{{hours.toString().lpad("0", 2)}}:{{minutes.toString().lpad("0", 2)}}:{{seconds.toString().lpad("0", 2)}}</timer> -->
+        <timer autostart="false">{{hours.toString().lpad("0", 2)}}:{{minutes.toString().lpad("0", 2)}}:{{seconds.toString().lpad("0", 2)}}</timer>
       </div>
     </div>
     <div class="list card" ng-hide="hasActiveSession()">
