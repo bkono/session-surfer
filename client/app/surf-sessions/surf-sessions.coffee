@@ -19,11 +19,16 @@ meanApp.config ($stateProvider) ->
       # views:
       #   'tab-surf-session-ratings':
       templateUrl: 'surf-sessions/ratings.tpl.html'
-      controller:  'SurfSessionsCtrl'
+      controller:  'RatingsCtrl'
 
-meanApp.controller 'SurfSessionsCtrl', ($scope, SurfSessions) ->
+meanApp.controller 'SurfSessionsCtrl', ($scope, $state, SurfSessions) ->
   $scope.model = {}
   $scope.hasActiveSession = SurfSessions.hasActiveSession
+  $scope.stop = ->
+    $scope.model.endTime = new Date()
+    $scope.$broadcast('timer-stop')
+    $state.go 'tab.surfSessions.ratings'
+
   $scope.newSession = ->
     SurfSessions.start().then (session) ->
       $scope.model = session
@@ -32,6 +37,8 @@ meanApp.controller 'SurfSessionsCtrl', ($scope, SurfSessions) ->
       $scope.$broadcast('timer-set-start', session.startTime.getTime())
       $scope.$broadcast("timer-start")
 
+meanApp.controller 'RatingsCtrl', ($scope, SurfSessions) ->
+  $scope.sessionRating = {}
   $scope.waveRating = 3
   $scope.windRating = 3
   $scope.crowdRating = 3
@@ -43,4 +50,7 @@ meanApp.controller 'SurfSessionsCtrl', ($scope, SurfSessions) ->
   $scope.hoveringOver = (value) ->
     $scope.overStar = value
     $scope.percent = 100 * (value / $scope.max)
+
+  $scope.$on '$stateChangeStart', (event) ->
+    # call SurfSession.stop & rate -> pass values from model
 
