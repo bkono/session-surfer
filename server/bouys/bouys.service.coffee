@@ -23,7 +23,7 @@ module.exports = BouyService =
 
   createBouy: (bouy, cb) ->
     newBouy = new Bouy(bouy)
-    newBouy.save (err) -> cb err, newBouy
+    newBouy.save (err, saved) -> cb err, saved
 
   firstOrCreateBouy: (bouy, cb) ->
     Bouy.update {stationId: bouy.stationId},

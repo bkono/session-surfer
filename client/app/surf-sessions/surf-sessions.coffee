@@ -16,8 +16,6 @@ meanApp.config ($stateProvider) ->
   $stateProvider
     .state 'tab.surfSessions.ratings',
       url: '/ratings'
-      # views:
-      #   'tab-surf-session-ratings':
       templateUrl: 'surf-sessions/ratings.tpl.html'
       controller:  'RatingsCtrl'
 
@@ -38,11 +36,12 @@ meanApp.controller 'SurfSessionsCtrl', ($scope, $state, SurfSessions) ->
       $scope.$broadcast("timer-start")
 
 meanApp.controller 'RatingsCtrl', ($scope, SurfSessions) ->
-  $scope.sessionRating = {}
-  $scope.waveRating = 3
-  $scope.windRating = 3
-  $scope.crowdRating = 3
-  $scope.overallRating = 3
+  $scope.sessionRating = {
+    wave: 3
+    wind: 3
+    crowd: 3
+    overall: 3
+  }
   $scope.max = 5
   $scope.isReadonly = false
   $scope.rateFunction = (rating) ->
@@ -52,5 +51,6 @@ meanApp.controller 'RatingsCtrl', ($scope, SurfSessions) ->
     $scope.percent = 100 * (value / $scope.max)
 
   $scope.$on '$stateChangeStart', (event) ->
+    SurfSessions.stop($scope.sessionRating)
     # call SurfSession.stop & rate -> pass values from model
 

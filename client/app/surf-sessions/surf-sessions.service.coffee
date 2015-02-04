@@ -15,7 +15,7 @@ meanApp.service 'SurfSessions', ($rootScope, $q, $http, Config) ->
       if activeSession.startTime
         console.log "resolving with an activesession"
         q.resolve(activeSession)
-      else 
+      else
         console.log "resolving with a start call"
         q.resolve(this.start())
       return q.promise
@@ -31,10 +31,24 @@ meanApp.service 'SurfSessions', ($rootScope, $q, $http, Config) ->
       $http.post "#{Config.serverUrl}/sessions", activeSession
         .success (session) ->
           console.log session
+          activeSession = session
         .error (err) ->
           console.log "error: [ #{err} ]"
-
       return q.promise
+
+    stop: (ratings = {}) ->
+      activeSession.ratings = ratings
+      console.log "stopping session:"
+      console.log activeSession
+      q = $q.defer()
+      q.resolve(activeSession)
+      $http.put "#{Config.serverUrl}/sessions", activeSession
+        .success (session) ->
+          console.log session
+        .error (err) ->
+          console.log "error: [ #{err} ]"
+      return q.promise
+
   }
 
   return SurfSessions

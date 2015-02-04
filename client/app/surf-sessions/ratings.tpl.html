@@ -2,12 +2,12 @@
   <ion-content class="padding" ng-init="rating = star.rating + 1">
   <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <h3>Waves</h3>
-    <div star-rating rating-value="waveRating" max="5" on-rating-selected="rateFunction(rating)"></div>
+    <div star-rating rating-value="sessionRating.wave" max="5" on-rating-selected="rateFunction(rating)"></div>
     <h3>Wind</h3>
-    <div star-rating rating-value="windRating" max="5" on-rating-selected="rateFunction(rating)"></div>
+    <div star-rating rating-value="sessionRating.wind" max="5" on-rating-selected="rateFunction(rating)"></div>
     <h3>Crowd</h3>
-    <div star-rating rating-value="crowdRating" max="5" on-rating-selected="rateFunction(rating)"></div>
+    <div star-rating rating-value="sessionRating.crowd" max="5" on-rating-selected="rateFunction(rating)"></div>
     <h3>Overall</h3>
-    <div star-rating rating-value="overallRating" max="5" on-rating-selected="rateFunction(rating)"></divmax="5" on-rating-selected="rateFunction(rating)"></div>
+    <div star-rating rating-value="sessionRating.overall" max="5" on-rating-selected="rateFunction(rating)"></divmax="5" on-rating-selected="rateFunction(rating)"></div>
   </ion-content>
 </ion-view>
