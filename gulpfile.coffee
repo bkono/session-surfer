@@ -8,6 +8,7 @@ clean             = require 'gulp-clean'
 gulpif            = require 'gulp-if'
 mocha             = require 'gulp-mocha'
 karma             = require('karma').server
+preprocess        = require 'gulp-preprocess'
 # Minification
 uglify            = require 'gulp-uglify'
 minifyHTML        = require 'gulp-minify-html'
@@ -50,6 +51,7 @@ gulp.task 'scripts', tasks.scripts = () ->
   coffeestream.on("error", gutil.log)
   gulp.src path.app.scripts
     .pipe(gulpif(/[.]coffee$/, coffeestream))
+    .pipe(preprocess())
     .pipe(ngAnnotate())
     .pipe(concat("app.js"))
     .pipe(size())

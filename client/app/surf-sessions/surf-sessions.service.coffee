@@ -1,4 +1,4 @@
-meanApp.service 'SurfSessions', ($rootScope, $q, $http) ->
+meanApp.service 'SurfSessions', ($rootScope, $q, $http, Config) ->
   activeSession = {}
 
   SurfSessions = {
@@ -22,12 +22,13 @@ meanApp.service 'SurfSessions', ($rootScope, $q, $http) ->
 
     start: ->
       console.log "in start, active session is: #{activeSession}"
+      console.log "Got a config serverUrl of #{Config.serverUrl}"
       q = $q.defer()
       startTime = new Date()
       activeSession = { startTime: startTime }
       console.log "set activeSession to #{activeSession}"
       q.resolve(activeSession)
-      $http.post '/sessions', activeSession
+      $http.post "#{Config.serverUrl}/sessions", activeSession
         .success (session) ->
           console.log session
         .error (err) ->
