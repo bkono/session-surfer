@@ -1,19 +1,20 @@
-path = require 'path'
-config = require './config'
+path    = require 'path'
+config  = require './config'
 express = require 'express'
 
 # express midlewares
-helmet = require 'helmet'
-multipart = require 'connect-multiparty'
-session = require 'express-session'
-sessionStore = require('connect-mongo')({session: session})
-compress = require 'compression'
-bodyParser = require 'body-parser'
-favicon = require 'serve-favicon'
-cookieParser = require 'cookie-parser'
+helmet         = require 'helmet'
+multipart      = require 'connect-multiparty'
+session        = require 'express-session'
+sessionStore   = require('connect-mongo')({session: session})
+compress       = require 'compression'
+bodyParser     = require 'body-parser'
+favicon        = require 'serve-favicon'
+cookieParser   = require 'cookie-parser'
 methodOverride = require 'method-override'
-serveStatic = require 'serve-static'
-errorHandler = require 'errorhandler'
+serveStatic    = require 'serve-static'
+errorHandler   = require 'errorhandler'
+cors           = require 'cors'
 
 module.exports = (passport, db, logger, root_path) ->
 
@@ -32,6 +33,16 @@ module.exports = (passport, db, logger, root_path) ->
   app.use helmet.iexss()
   app.use helmet.contentTypeOptions()
   app.use helmet.cacheControl()
+
+  # cors
+  whitelist = ['http://localhost:8100', 'http://localhost:3000', 
+    'http://localhost']
+  corsOptions = {
+    origin: (origin, cb) ->
+      originIsWhitelisted = whitelist.indexOf(origin) is not -1
+      cb(null, originIsWhitelisted)
+  }
+  app.use cors()
 
   # ensure all assets and data are compressed - above static
   app.use compress()
