@@ -1,0 +1,5 @@
+#STN  #YY  MM DD hh mm WVHT  SwH  SwP  WWH  WWP SwD WWD  STEEPNESS  APD MWD
+-Sub  #yr  mo dy hr mn    m    m  sec    m  sec  -  degT     -      sec degT
+52202 2015 02 07 22 55  2.1  0.8 11.8  1.9  7.7 NNE  NE      STEEP  6.1  50
+52202 2015 02 07 22 25  2.1  0.8 14.3  2.0  8.3  NE  NE    AVERAGE  5.9  56
+LJPC1 2015 02 07 22 24  0.8  0.8  5.0  0.0   MM  MM  MM        N/A   MM -99

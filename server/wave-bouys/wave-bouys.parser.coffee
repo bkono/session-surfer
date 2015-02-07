@@ -30,7 +30,7 @@ server.on 'waveBouy:checkHour', (hour) ->
   parser = new WaveBouyFileParser({objectMode: true})
   request(reqUrl).pipe(parser)
 
-class WaveBouyFileParser extends Transform
+module.exports.waveBouyParser = class WaveBouyFileParser extends Transform
   constructor: (options) ->
     super(options)
     @nextRows = ''
@@ -45,7 +45,7 @@ class WaveBouyFileParser extends Transform
       @headers = @parseHeaderRow(rows.shift()) unless @headers?
       rows.shift() if rows[0].indexOf("-Sub") > -1
       rows.map (waveBouy) =>
-        waveBouyObj = @parseWaveBouy(waveBouy.split(/\s+/), @headers)
+        waveBouyObj = @parseWaveBuoy(waveBouy.split(/\s+/), @headers)
         server.emit 'waveBouy:reading', waveBouyObj unless waveBouyObj is null
     next()
 
@@ -54,13 +54,16 @@ class WaveBouyFileParser extends Transform
       header = 'mo' if header == "MM"
       changeCase.camelCase(header.replace('#', '')) if header?
 
-  parseWaveBouy:  (waveBouy, @headers) ->
+  parseWaveBuoy:  (waveBouy, @headers) ->
+    console.log waveBouy.length
+    console.log @headers.length
     return null unless waveBouy.length == @headers.length
     waveBouyClean = lo.map(waveBouy, (val) -> val.replace('MM', '-99'))
     waveBouyObject = lo.object(lo.zip(@headers, waveBouyClean))
     timeKeys = ['yy', 'mo', 'dd', 'hh', 'mm']
     [yr, mo, d, hr, mi, ms] = lo.values(
-      lo.pick( waveBouyObject, timeKeys)).concat([0,0])
-    waveBouyObject['time'] = new Date(yr, mo, d, hr, mi, ms)
+      lo.pick( waveBouyObject, timeKeys)).concat([0])
+    # have to subtract 1 from month because it's 0 start number
+    waveBouyObject['time'] = new Date(yr, mo - 1, d, hr, mi, ms)
     lo.omit(waveBouyObject,timeKeys)
 
