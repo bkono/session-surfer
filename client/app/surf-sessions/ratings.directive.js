@@ -3,7 +3,7 @@ meanApp.directive("starRating", function() {
     restrict : "A",
     template : "<ul class='rating'>" +
                "  <li ng-repeat='star in stars' ng-class='star' ng-click='toggle($index)'>" +
-               "    <i class='fa fa-star'></i>" + //&#9733
+               "    <i class='icon ion-star'></i>" + //&#9733
                "  </li>" +
                "</ul>",
     scope : {
