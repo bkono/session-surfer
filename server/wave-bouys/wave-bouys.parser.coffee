@@ -52,17 +52,15 @@ module.exports.waveBouyParser = class WaveBouyFileParser extends Transform
   parseHeaderRow: (headerRow) ->
     headerRow.split(/\s+/).map (header) ->
       header = 'mo' if header == "MM"
-      changeCase.camelCase(header.replace('#', '')) if header?
+      changeCase.lower(header.replace('#', '')) if header?
 
   parseWaveBuoy:  (waveBouy, @headers) ->
-    console.log waveBouy.length
-    console.log @headers.length
     return null unless waveBouy.length == @headers.length
     waveBouyClean = lo.map(waveBouy, (val) -> val.replace('MM', '-99'))
     waveBouyObject = lo.object(lo.zip(@headers, waveBouyClean))
     timeKeys = ['yy', 'mo', 'dd', 'hh', 'mm']
     [yr, mo, d, hr, mi, ms] = lo.values(
-      lo.pick( waveBouyObject, timeKeys)).concat([0])
+      lo.pick( waveBouyObject, timeKeys)).concat([0, 0])
     # have to subtract 1 from month because it's 0 start number
     waveBouyObject['time'] = new Date(yr, mo - 1, d, hr, mi, ms)
     lo.omit(waveBouyObject,timeKeys)
