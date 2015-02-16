@@ -86,5 +86,8 @@
     "run-sequence": "^1.0.2",
     "shelljs": "^0.3.0",
     "supertest": "0.11.x"
-  }
+  },
+  "cordovaPlugins": [
+    "org.apache.cordova.geolocation"
+  ]
 }

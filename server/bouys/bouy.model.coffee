@@ -13,7 +13,7 @@ Bouy = new Schema
   name: String
   payload: String
   location:
-    type: 
+    type:
       type: String
       required: true,
       enum: ['Point', 'LineString', 'Polygon'],

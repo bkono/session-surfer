@@ -1,7 +1,7 @@
 .DS_Store
 .idea
 *.log
-
+platforms/*
 node_modules
 www/
 client/components

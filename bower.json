@@ -5,7 +5,8 @@
     "angular-google-maps": "~2.0.12",
     "angular-resource": "~1.3.10",
     "angular-timer": "bkonowitz/angular-timer",
-    "ionicons": "~2.0.1"
+    "ionicons": "~2.0.1",
+    "ngCordova": "~0.1.12-alpha"
   },
   "devDependencies": {
     "ionic": "driftyco/ionic-bower#1.0.0-beta.14"

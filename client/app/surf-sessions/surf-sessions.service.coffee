@@ -1,4 +1,4 @@
-meanApp.service 'SurfSessions', ($rootScope, $q, $http, Config) ->
+meanApp.service 'SurfSessions', ($rootScope, $q, $http, Config, $cordovaGeolocation) ->
   activeSession = {}
 
   SurfSessions = {
@@ -10,45 +10,46 @@ meanApp.service 'SurfSessions', ($rootScope, $q, $http, Config) ->
 
     currentSession: ->
       q = $q.defer()
-      console.log "current session called, active session is: "
-      console.log activeSession
       if activeSession.startTime
-        console.log "resolving with an activesession"
         q.resolve(activeSession)
       else
-        console.log "resolving with a start call"
         q.resolve(this.start())
       return q.promise
 
     start: ->
-      console.log "in start, active session is: #{activeSession}"
-      console.log "Got a config serverUrl of #{Config.serverUrl}"
       q = $q.defer()
       startTime = new Date()
       activeSession = { startTime: startTime }
-      console.log "set activeSession to #{activeSession}"
       q.resolve(activeSession)
-      $http.post "#{Config.serverUrl}/sessions", activeSession
-        .success (session) ->
-          console.log session
-          activeSession = session
-        .error (err) ->
-          console.log "error: [ #{err} ]"
+      @currentLocation()
+        .then (location) ->
+          activeSession.location = location
+          $http.post "#{Config.serverUrl}/sessions", activeSession
+            .success (session) ->
+              activeSession = session
+            .error (err) ->
       return q.promise
 
     stop: (ratings = {}) ->
       activeSession.ratings = ratings
-      console.log "stopping session:"
-      console.log activeSession
       q = $q.defer()
       q.resolve(activeSession)
       $http.put "#{Config.serverUrl}/sessions", activeSession
-        .success (session) ->
-          console.log session
-        .error (err) ->
-          console.log "error: [ #{err} ]"
       return q.promise
 
+    currentLocation: (session) ->
+      q = $q.defer()
+      posOptions = {timeout: 10000, enableHighAccuracy: false}
+      $cordovaGeolocation.getCurrentPosition(posOptions)
+        .then (position) ->
+          location = {}
+          location.type = 'Point'
+          location.coordinates = [
+            position.coords.longitude,
+            position.coords.latitude
+          ]
+          q.resolve(location)
+      return q.promise
   }
 
   return SurfSessions

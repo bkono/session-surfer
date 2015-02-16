@@ -19,7 +19,7 @@ meanApp.config ($stateProvider) ->
       templateUrl: 'surf-sessions/ratings.tpl.html'
       controller:  'RatingsCtrl'
 
-meanApp.controller 'SurfSessionsCtrl', ($scope, $state, SurfSessions) ->
+meanApp.controller 'SurfSessionsCtrl', ($scope, $state, SurfSessions, $cordovaGeolocation) ->
   $scope.model = {}
   $scope.hasActiveSession = SurfSessions.hasActiveSession
   $scope.stop = ->
