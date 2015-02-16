@@ -1,5 +1,4 @@
 meanApp.directive "starRating", ->
-  return {
     restrict : "A"
     template : """
       <ul class='rating'>
@@ -25,4 +24,3 @@ meanApp.directive "starRating", ->
 
       scope.$watch "ratingValue", (oldVal, newVal) ->
         updateStars() if(newVal)
-  }

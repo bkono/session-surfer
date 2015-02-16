@@ -20,7 +20,7 @@ module.exports = class CurrentWaveBouysService extends EventEmitter
     not (currentStn? and (currentTime >= newTime) )
 
   getLocation: (bouy) ->
-    return bouy if bouy.location?
+    return bouy.location if bouy.location?
     [error, station] = BouyService.getBouy(bouy.stn, (err, stn) -> [err, stn])
     if error?
       logger.error "Unable to find bouy info for: #{bouy.stn} [ #{err} ]"
